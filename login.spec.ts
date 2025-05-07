@@ -26,3 +26,31 @@ test('Verify user can log in and see dashboard', async ({ page }) => {
     const actualNavItems = await navItems.allTextContents();
     expect(actualNavItems).toContain(['Home', 'Profile', 'Settings', 'Logout']); 
 });
+
+test('Verify search functionality', async ({ page }) => {
+    // Navigate to the search page
+    await page.goto('https://example.com/search');
+
+    // Enter a search term
+    await page.fill('#search-box', 'Playwright');
+
+    // Click the search button
+    await page.click('#search-button');
+
+    // Wait for results to load
+    await page.waitForSelector('.result-item');
+
+    // Verify the first result contains the search term
+    const firstResult = await page.locator('.result-item').first().textContent();
+    expect(firstResult.includes('Playwright')).toBeTruthy();
+
+    // Verify the total number of results
+    const totalResults = await page.locator('.result-count').textContent();
+    expect(parseInt(totalResults)).toBeGreaterThan(0);
+
+    // Click on the first result
+    await page.click('.result-item');
+
+    // Verify the URL of the first result page
+    expect(page.url()).toContain('/details');
+});
