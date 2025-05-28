@@ -28,6 +28,19 @@ test('Verify user can log in and see dashboard', async ({ page }) => {
 });
 
 test('Verify search functionality', async ({ page }) => {
+    // Navigate to the login page
+    await page.goto('https://example.com/login');
+
+    // Fill in the username and password
+    await page.fill('#username', 'test_user');
+    await page.fill('#password', 'password123');
+
+    // Click the login button
+    await page.click('button#login');
+
+    // Wait for the dashboard to load
+    await page.waitForTimeout(5000); 
+    
     // Navigate to the search page
     await page.goto('https://example.com/search');
 
